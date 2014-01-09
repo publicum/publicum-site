@@ -1,0 +1,24 @@
+!!! 5
+%html{ :lang => 'nl' }
+  %head
+    / https://secure.flickr.com/photos/31878512@N06/4941767047/sizes/o/
+    %meta{ :charset => 'utf-8' }
+    %title Publicum Films
+    %meta{ :name => 'viewport', :content => 'width=device-width,initial-scale=1,maximum-scale=2,minimum-scale=1' }
+    %link{ :rel => 'stylesheet', :media => 'screen,projection', :href => '/css/screen.css' }
+
+  %body.homepage
+    .wrapper
+      %header
+        %h1
+          %a{ :href => '/' } Publicum Films
+
+      %nav
+        %ul
+          - menu.each do |item|
+            %li
+              %a{ :href => item.identifier }= item.attributes[:title]
+
+      %main
+        %article
+          = yield

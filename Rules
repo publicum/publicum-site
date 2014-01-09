@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+
+require 'compass'
+
+
+Compass.add_project_configuration 'compass.rb'
+sass_options = Compass.sass_engine_options
+
+
+compile '/js/*/' do
+  if item[:extension] == 'coffee'
+    filter :coffeescript
+  end
+  
+  filter :uglify_js, {
+    :comments => :none
+  }
+end
+
+compile '/css/*/' do
+  filter :sass, sass_options.merge(:syntax => item[:extension].to_sym)
+end
+
+compile '*' do
+  unless item.binary?
+    filter :haml
+    layout 'default'
+  end
+end
+
+
+
+route '/js/*/' do
+  item.identifier.chop + '.js'
+end
+
+route '/css/*/' do
+  item.identifier.chop + '.css'
+end
+
+route '*' do
+  if item.binary?
+    item.identifier.chop + '.' + item[:extension]
+  else
+    item.identifier + 'index.html'
+  end
+end
+
+layout '*', :haml
